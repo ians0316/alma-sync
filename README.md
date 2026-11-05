@@ -14,6 +14,36 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 | Google Calendar | The same assignments | Alerts, which Notion Calendar only sends for Google events |
 | Google Sheets | Every assignment and grade, grouped by class | Gradebook with a recently graded section |
 
+## Setup (macOS)
+
+1. Install the dependencies:
+
+   ```bash
+   cd alma_sync
+   python3 -m pip install -r requirements.txt
+   python3 -m playwright install chromium
+   ```
+
+2. Copy `config.example.json` to `config.json` and fill it in.
+
+3. Add two items to the **login** keychain in Keychain Access (not iCloud):
+
+   | Keychain Item Name | Account Name | Password |
+   |---|---|---|
+   | `AlmaPortal` | your Alma username | your Alma password |
+   | `NotionToken` | `notion` | your Notion integration token |
+
+4. Share the Notion database with your Notion integration.
+
+5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and Sheets APIs enabled. Save its JSON key as `~/.alma_sync/google-service-account.json`, then share the calendar and the spreadsheet with the service account's email. Google steps are skipped if this isn't set up.
+
+6. Run it once by hand, then install the schedule:
+
+   ```bash
+   python3 sync.py --setup
+   ./install_schedule.sh
+   ```
+
 ## Features
 
 **Calendar**
@@ -83,36 +113,6 @@ alma_sync/
 legacy/
   calendar_store.py             Old Apple Calendar writer, no longer used
 ```
-
-## Setup (macOS)
-
-1. Install the dependencies:
-
-   ```bash
-   cd alma_sync
-   python3 -m pip install -r requirements.txt
-   python3 -m playwright install chromium
-   ```
-
-2. Copy `config.example.json` to `config.json` and fill it in.
-
-3. Add two items to the **login** keychain in Keychain Access (not iCloud):
-
-   | Keychain Item Name | Account Name | Password |
-   |---|---|---|
-   | `AlmaPortal` | your Alma username | your Alma password |
-   | `NotionToken` | `notion` | your Notion integration token |
-
-4. Share the Notion database with your Notion integration.
-
-5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and Sheets APIs enabled. Save its JSON key as `~/.alma_sync/google-service-account.json`, then share the calendar and the spreadsheet with the service account's email. Google steps are skipped if this isn't set up.
-
-6. Run it once by hand, then install the schedule:
-
-   ```bash
-   python3 sync.py --setup
-   ./install_schedule.sh
-   ```
 
 ## Using it
 
