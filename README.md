@@ -1,4 +1,4 @@
-# Alma Sync + Custom Tasks
+# Alma Sync + Calendar Integration
 
 Keeps school assignments and grades up to date outside the Alma student portal. A background job on a Mac reads every class page in Alma once an hour and sends the results to Notion, Google Calendar, and Google Sheets.
 
