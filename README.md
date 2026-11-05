@@ -1,10 +1,10 @@
 # Alma Sync + Calendar Integration
 
-Keeps my school assignments and grades up to date outside the Alma student portal. A background job on my Mac reads every class page in Alma once an hour and sends the results to the tools I use.
+Keeps school assignments and grades up to date outside the Alma student portal. A background job on a Mac reads every class page in Alma once an hour and sends the results to Notion, Google Calendar, and Google Sheets.
 
-## Why I built this
+## Why this exists
 
-Alma is where teachers post assignments, change due dates, and enter grades, but it has no calendar feed I could subscribe to and no alerts for due dates. Checking it meant logging in and reading a list that keeps changing. I wanted my assignments to appear on my calendar by themselves, at the time of the class they're due in, and to see all my grades in one organized place.
+Alma is where teachers post assignments, change due dates, and enter grades, but it has no calendar feed to subscribe to and no alerts for due dates. Checking it means logging in and reading a list that keeps changing. This project puts assignments on a calendar automatically, at the time of the class they're due in, and keeps all grades in one organized place.
 
 ## What it does
 
@@ -60,7 +60,7 @@ Each run follows the same steps:
 3. **Update the calendars.** Assignments due from 3 days ago onward go to Notion and Google Calendar. Each one is matched on its Alma assignment ID, so reruns update it instead of creating a duplicate.
 4. **Rebuild the gradebook.** The Grades tab is cleared and rewritten from the full scrape, so it always matches Alma.
 
-## Problems I ran into
+## Challenges solved
 
 - **The To Do list hides things.** Alma's To Do page drops an assignment as soon as it's graded, even on the day it's due. Scraping class pages fixed this, and it also made grades available.
 - **Apple Calendar was blocked.** The first version wrote to Apple Calendar, but macOS kept denying calendar access to the background job. Moving to Notion and Google's web APIs removed that permission problem. The old code is in `legacy/`.
