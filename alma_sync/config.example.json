@@ -1,0 +1,7 @@
+{
+  "username": "your_alma_username",
+  "base_url": "https://yourschool.getalma.com",
+  "notion_database_id": "your_notion_database_id",
+  "google_calendar_id": "your_calendar_id@group.calendar.google.com",
+  "google_sheet_id": "your_google_sheet_id"
+}

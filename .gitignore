@@ -1,0 +1,13 @@
+# Private settings and exported data
+alma_sync/config.json
+alma_sync/assignments.json
+*.key
+*service-account*.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store
