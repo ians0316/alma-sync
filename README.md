@@ -1,4 +1,4 @@
-# Alma Sync
+# Alma Sync + Calendar Integration
 
 Keeps my school assignments and grades up to date outside the Alma student portal. A background job on my Mac reads every class page in Alma once an hour and sends the results to the tools I use.
 
