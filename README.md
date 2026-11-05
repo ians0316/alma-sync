@@ -100,6 +100,9 @@ Each run follows the same steps:
 ## Project layout
 
 ```
+manifest.json                   Chrome extension settings
+content.js                      Adds badges and the grades box to Alma
+style.css                       Extension styling
 alma_sync/
   sync.py                       Runs one full sync
   alma_scraper.py               Alma login and class page scraping
@@ -110,10 +113,6 @@ alma_sync/
   requirements.txt              Python packages
   install_schedule.sh           Installs the hourly launchd job
   com.alma.sync.plist.template  launchd job template
-extension/
-  manifest.json                 Chrome extension settings
-  content.js                    Adds badges and the grades box to Alma
-  style.css                     Extension styling
 legacy/
   calendar_store.py             Old Apple Calendar writer, no longer used
 ```
@@ -128,7 +127,7 @@ The job only runs while the Mac is awake and catches up after it wakes. Failures
 
 ## Chrome extension
 
-The `extension/` folder is a small Chrome extension that improves Alma's To Do page itself:
+The repo also includes a small Chrome extension that improves Alma's To Do page itself:
 
 - **Days-left badges:** each assignment shows Today, Tomorrow, or the number of days left, color-coded by urgency.
 - **Recently graded box:** grades from the last 7 days appear above the To Do list, newest first, with links to each assignment.
@@ -138,7 +137,7 @@ It needs no extra Chrome permissions. It reads Alma pages using the login alread
 To install it:
 
 1. Open `chrome://extensions` and turn on **Developer mode**.
-2. Click **Load unpacked** and choose the `extension` folder.
+2. Click **Load unpacked** and choose this project's main folder, the one with `manifest.json` in it.
 3. Open or refresh Alma's To Do page.
 
 After changing the code, click the reload icon on the extension's card.
