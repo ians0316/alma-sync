@@ -123,7 +123,7 @@ The job only runs while the Mac is awake and catches up after it wakes. Failures
 
 ## Chrome extension
 
-[Alma Helper](https://github.com/ians0316/alma-helper) is a companion Chrome extension that adds days-left badges, recent grades, and custom tasks to Alma's To Do page.
+[Alma Plus](https://github.com/ians0316/alma-plus) is a companion Chrome extension that adds days-left badges, recent grades, and custom tasks to Alma's To Do page.
 
 ## Adapting it to another school
 
