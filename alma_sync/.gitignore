@@ -1,0 +1,13 @@
+# Private settings and exported data
+config.json
+assignments.json
+*.key
+*service-account*.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store

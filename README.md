@@ -113,6 +113,7 @@ alma_sync/
   requirements.txt              Python packages
   install_schedule.sh           Installs the hourly launchd job
   com.alma.sync.plist.template  launchd job template
+  legacy/calendar_store.py      Old Apple Calendar writer, no longer used
 ```
 
 ## Using it
