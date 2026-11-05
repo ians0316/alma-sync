@@ -132,3 +132,7 @@ Class period times are hardcoded in `PERIOD_TIMES` in `alma_scraper.py`. Change 
 ## Privacy
 
 Passwords and tokens live in the macOS Keychain, and the Google key lives in `~/.alma_sync/`. `config.json`, exported data, and logs are not part of this repo.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
