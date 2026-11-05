@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Alma Sync Helper",
+  "version": "1.0.0",
+  "description": "Adds days-left badges and a recently graded box to Alma's To Do page.",
+  "content_scripts": [
+    {
+      "matches": ["https://*.getalma.com/home/assignments*"],
+      "js": ["content.js"],
+      "css": ["style.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

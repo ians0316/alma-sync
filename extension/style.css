@@ -1,0 +1,71 @@
+.ash-badge {
+  display: block;
+  width: fit-content;
+  margin: 4px auto 0;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.ash-urgent { background: #f4cccc; color: #990000; }
+.ash-soon { background: #fce5cd; color: #b45f06; }
+.ash-near { background: #fff2cc; color: #7f6000; }
+.ash-later { background: #e8eaed; color: #5f6368; }
+
+.ash-box {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+}
+
+.ash-box summary {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ash-body {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.ash-body ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ash-grade {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px solid #eee;
+}
+
+.ash-score {
+  flex: 0 0 74px;
+  padding: 2px 0;
+  border-radius: 6px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.ash-low { background: #f4cccc; color: #990000; }
+.ash-mid { background: #e8eaed; color: #3c4043; }
+.ash-high { background: #d9ead3; color: #274e13; }
+
+.ash-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ash-details small {
+  color: #777;
+}
