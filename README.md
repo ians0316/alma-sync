@@ -93,7 +93,7 @@ Each run follows the same steps:
 ## Challenges solved
 
 - **The To Do list hides things.** Alma's To Do page drops an assignment as soon as it's graded, even on the day it's due. Scraping class pages fixed this, and it also made grades available.
-- **Apple Calendar was blocked.** The first version wrote to Apple Calendar, but macOS kept denying calendar access to the background job. Moving to Notion and Google's web APIs removed that permission problem. The old code is in `legacy/`.
+- **Apple Calendar was blocked.** The first version wrote to Apple Calendar, but macOS kept denying calendar access to the background job. Moving to Notion and Google's web APIs removed that permission problem.
 - **Notion Calendar has no alerts for database items.** Its reminders only work for Google Calendar events, so assignments are also copied to a Google calendar.
 - **Laptops sleep.** A timer-based schedule kept missing runs, and sleep killed runs partway through. Fixed times, keeping the Mac awake during a run, and retries solved it.
 
@@ -113,8 +113,6 @@ alma_sync/
   requirements.txt              Python packages
   install_schedule.sh           Installs the hourly launchd job
   com.alma.sync.plist.template  launchd job template
-legacy/
-  calendar_store.py             Old Apple Calendar writer, no longer used
 ```
 
 ## Using it
