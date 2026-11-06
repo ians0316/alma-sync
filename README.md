@@ -1,6 +1,6 @@
 # Alma Sync + Calendar Integration
 
-Alma Sync is a tool that adds convenient features for Seoul Academy students and technically everyone who uses Alma. It Keeps school assignments and grades up to date outside the Alma student portal. A background job on a Mac reads every class page in Alma once an hour and sends the results to Notion, Google Calendar, and Google Sheets.
+Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 
 ## Why this exists
 
@@ -90,7 +90,7 @@ Each run follows the same steps:
 3. **Update the calendars.** Assignments due from 3 days ago onward go to Notion and Google Calendar. Each one is matched on its Alma assignment ID, so reruns update it instead of creating a duplicate.
 4. **Rebuild the gradebook.** The Grades tab is cleared and rewritten from the full scrape, so it always matches Alma.
 
-## Challenges solved
+## Bugs fixed
 
 - **The To Do list hides things.** Alma's To Do page drops an assignment as soon as it's graded, even on the day it's due. Scraping class pages fixed this, and it also made grades available.
 - **Apple Calendar was blocked.** The first version wrote to Apple Calendar, but macOS kept denying calendar access to the background job. Moving to Notion and Google's web APIs removed that permission problem.
