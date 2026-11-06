@@ -121,10 +121,6 @@ alma_sync/
 
 The job only runs while the Mac is awake and catches up after it wakes. Failures are logged and show a macOS notification.
 
-## Chrome extension
-
-[Alma Plus](https://github.com/ians0316/alma-plus) is a companion Chrome extension that adds days-left badges, recent grades, and custom tasks to Alma's To Do page.
-
 ## Adapting it to another school
 
 Class period times are hardcoded in `PERIOD_TIMES` in `alma_scraper.py`. Change them to your school's bell schedule, and set `base_url` in `config.json`.
