@@ -2,7 +2,7 @@
 
 How to set up Alma Sync on a Windows PC. For a Mac, see the [main README](README.md). The rest of the project works the same on both.
 
-## What's in the windows folder
+## Windows Setup
 
 | File | What it does |
 |---|---|
