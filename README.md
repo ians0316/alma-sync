@@ -143,7 +143,7 @@ windows/
   requirements.txt              Python packages for Windows
 ```
 
-## Using it
+## Using this program
 
 - Sync right away: `python3 sync.py` (`python sync.py` on Windows)
 - Check what happened: `sync.log` in the `.alma_sync` folder in your home folder
@@ -162,7 +162,3 @@ Passwords and tokens live in the macOS Keychain or Windows Credential Manager, a
 ## Bugs
 
 If you happen to find a bug, please contact at ian.shin0316@gmail.com or ian.shin0316@seoulacademy.org.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
