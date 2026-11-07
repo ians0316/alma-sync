@@ -16,6 +16,7 @@ from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
 
 from google_store import KEY_PATH
+from platform_support import long_timestamp, short_date
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 API = "https://sheets.googleapis.com/v4/spreadsheets"
@@ -109,7 +110,7 @@ def build_layout(result, today: date, synced_at: datetime):
 
     values = [
         ["Grades"],
-        ["Last updated", f"{synced_at:%a, %b %-d, %Y at %-I:%M %p}"],
+        ["Last updated", long_timestamp(synced_at)],
         ["Rebuilt from Alma every hour. Edits on this tab get overwritten."],
         [],
         ["Class", "Grade", "Percent", "As of", "Graded", "Not graded yet", "Upcoming", "Lowest score so far"],
@@ -147,7 +148,7 @@ def build_layout(result, today: date, synced_at: datetime):
         header_row = len(values)
         label = cls if not grade else (
             f"{cls}   {grade.letter}" + (f" ({grade.percent:.1%})" if grade.percent is not None else "")
-            + (f"   as of {grade.as_of:%b %-d}" if grade.as_of else "")
+            + (f"   as of {short_date(grade.as_of)}" if grade.as_of else "")
         )
         values.append([_text(label)])
         values.append(["Assignment", "Category", "Due date", "Status", "Grade", "Score", "Points", "Weight", "Graded on", "Teacher comment"])

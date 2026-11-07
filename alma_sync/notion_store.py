@@ -7,11 +7,12 @@ existing rows instead of duplicating them. Rows are never deleted, and the
 import json
 import os
 import ssl
-import subprocess
 import time
 import urllib.error
 import urllib.request
 from datetime import date
+
+from platform_support import get_secret
 
 API = "https://api.notion.com/v1"
 NOTION_VERSION = "2022-06-28"
@@ -21,21 +22,13 @@ KEYCHAIN_ACCOUNT = "notion"
 
 # Python installed from python.org ships without CA certificates, so HTTPS fails
 # with CERTIFICATE_VERIFY_FAILED. macOS's own bundle works for every Python build.
+# Windows has no such file, and Python there uses the Windows certificate store.
 _MAC_CA_BUNDLE = "/etc/ssl/cert.pem"
 _SSL_CONTEXT = ssl.create_default_context(cafile=_MAC_CA_BUNDLE if os.path.exists(_MAC_CA_BUNDLE) else None)
 
 
 def get_token() -> str:
-    result = subprocess.run(
-        ["security", "find-generic-password", "-a", KEYCHAIN_ACCOUNT, "-s", KEYCHAIN_SERVICE, "-w"],
-        capture_output=True, text=True,
-    )
-    if result.returncode != 0:
-        raise RuntimeError(
-            f"Could not read the Notion token from Keychain (item '{KEYCHAIN_SERVICE}', account "
-            f"'{KEYCHAIN_ACCOUNT}'). Details: {result.stderr.strip()}"
-        )
-    return result.stdout.strip()
+    return get_secret(KEYCHAIN_SERVICE, KEYCHAIN_ACCOUNT)
 
 
 def _request(token: str, method: str, path: str, body: dict | None = None) -> dict:

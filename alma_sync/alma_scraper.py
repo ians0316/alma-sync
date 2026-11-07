@@ -1,11 +1,12 @@
 """Logs into an Alma SIS portal (getalma.com) and scrapes the student's to-do/assignments list."""
 import re
-import subprocess
 import sys
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 
 from playwright.sync_api import sync_playwright, TimeoutError as PWTimeoutError
+
+from platform_support import get_secret as get_keychain_password, notify  # noqa: F401 (re-exported)
 
 MONTHS = {
     "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
@@ -68,19 +69,6 @@ class ScrapeResult:
     class_grades: dict[str, ClassGrade]
 
 
-def get_keychain_password(service: str, account: str) -> str:
-    result = subprocess.run(
-        ["security", "find-generic-password", "-a", account, "-s", service, "-w"],
-        capture_output=True, text=True,
-    )
-    if result.returncode != 0:
-        raise RuntimeError(
-            f"Could not read password from Keychain (service='{service}', account='{account}'). "
-            f"Add it via Keychain Access first. Details: {result.stderr.strip()}"
-        )
-    return result.stdout.strip()
-
-
 def _infer_due_date(month_abbr: str, day: int, today: date) -> date:
     month = MONTHS[month_abbr]
     year = today.year
@@ -91,11 +79,6 @@ def _infer_due_date(month_abbr: str, day: int, today: date) -> date:
     elif delta > 180:
         candidate = date(year - 1, month, day)
     return candidate
-
-
-def notify(title: str, message: str):
-    script = f'display notification {message!r} with title {title!r}'
-    subprocess.run(["osascript", "-e", script], capture_output=True)
 
 
 def login(page, base_url: str, username: str, password: str, otp_prompt=None) -> bool:

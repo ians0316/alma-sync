@@ -1,8 +1,8 @@
 # Alma Sync + Calendar Integration
 
-> **⚠️ Important:** Alma Sync is an unofficial student project. It is not made, supported, or approved by Alma or Seoul Academy. It signs in with your own Alma account and only reads your pages, but Alma can change its website at any time and break the sync, so always double-check due dates in Alma itself. Your password stays in your Mac's Keychain and is never put in this repo.
+> **⚠️ Important:** Alma Sync is an unofficial student project. It is not made, supported, or approved by Alma or Seoul Academy. It signs in with your own Alma account and only reads your pages, but Alma can change its website at any time and break the sync, so always double-check due dates in Alma itself. Your password stays in your computer's password store (macOS Keychain or Windows Credential Manager) and is never put in this repo.
 
-Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
+Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac or Windows PC reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 
 ## Why this exists
 
@@ -16,19 +16,27 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 | Google Calendar | The same assignments | Alerts, which Notion Calendar only sends for Google events |
 | Google Sheets | Every assignment and grade, grouped by class | Gradebook with a recently graded section |
 
-## Setup and Installation (macOS)
+## Setup and Installation (macOS and Windows)
+
+Needs Python 3.10 or newer. On Windows, install it from [python.org](https://www.python.org/downloads/) and tick **Add python.exe to PATH** in the installer. On a Mac, type `python3` wherever these steps say `python`.
 
 1. Install the dependencies:
 
    ```bash
    cd alma_sync
-   python3 -m pip install -r requirements.txt
-   python3 -m playwright install chromium
+   python -m pip install -r requirements.txt
+   python -m playwright install chromium
    ```
 
 2. Copy `config.example.json` to `config.json` and fill it in.
 
-3. Add two items to the **login** keychain in Keychain Access (not iCloud):
+3. Save your Alma password and Notion integration token:
+
+   ```bash
+   python sync.py --save-secrets
+   ```
+
+   They go into the macOS Keychain or Windows Credential Manager, never into a file. On a Mac you can instead add them by hand in Keychain Access, in the **login** keychain (not iCloud):
 
    | Keychain Item Name | Account Name | Password |
    |---|---|---|
@@ -37,13 +45,26 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 
 4. Share the Notion database with your Notion integration.
 
-5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and Sheets APIs enabled. Save its JSON key as `~/.alma_sync/google-service-account.json`, then share the calendar and the spreadsheet with the service account's email. Google steps are skipped if this isn't set up.
+5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and Sheets APIs enabled. Save its JSON key as `google-service-account.json` in the `.alma_sync` folder in your home folder (`~/.alma_sync/` on a Mac, `C:\Users\<you>\.alma_sync\` on Windows), then share the calendar and the spreadsheet with the service account's email. Google steps are skipped if this isn't set up.
 
-6. Run it once by hand, then install the schedule:
+6. Run it once by hand to sign in:
 
    ```bash
-   python3 sync.py --setup
+   python sync.py --setup
+   ```
+
+7. Install the hourly schedule.
+
+   On a Mac:
+
+   ```bash
    ./install_schedule.sh
+   ```
+
+   On Windows, in PowerShell:
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\install_schedule.ps1
    ```
 
 ## Features
@@ -54,7 +75,7 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 - Each assignment sits at its real class period time instead of an all-day block.
 - Past assignments stay on the calendar as a record. The sync never deletes anything from Notion or Google Calendar.
 - The Done checkbox in Notion is left alone, so checking off an assignment sticks.
-- Google Calendar sends alerts from its own servers, so assignments that have already synced still alert while the Mac is asleep.
+- Google Calendar sends alerts from its own servers, so assignments that have already synced still alert while the computer is asleep.
 
 **Gradebook**
 
@@ -71,17 +92,18 @@ The project has four parts that work together:
 - **Scraper** (`alma_scraper.py`) signs in to Alma and reads every class page for assignments, due dates, and grades.
 - **Writers** (`notion_store.py`, `google_store.py`, `grades_sheet.py`) send that data to Notion, Google Calendar, and Google Sheets. Each one runs on its own.
 - **Runner** (`sync.py`) runs the scraper and then each writer, in order, and logs the result.
-- **Schedule** (`install_schedule.sh`) sets up a macOS launchd job that starts the runner once an hour.
+- **Schedule** (`install_schedule.sh` on macOS, `install_schedule.ps1` on Windows) sets up a launchd job or a Task Scheduler task that starts the runner once an hour.
+- **Platform support** (`platform_support.py`) handles the parts that differ between macOS and Windows: saved passwords, notifications, and keeping the computer awake.
 
-Settings live in `config.json`, and passwords live in the macOS Keychain, so neither one is in the code.
+Settings live in `config.json`, and passwords live in the macOS Keychain or Windows Credential Manager, so neither one is in the code.
 
 **Reliability**
 
 - Requests retry on timeouts and server errors, and the Alma scrape gets three attempts.
 - If one assignment fails to write, the rest still go through.
 - Notion, Google Calendar, and the gradebook are separate steps, so a problem with one doesn't stop the others from being attempted.
-- The Mac stays awake while a sync is running, and missed runs catch up after it wakes.
-- Failures are written to a log and shown as a macOS notification.
+- The computer stays awake while a sync is running, and missed runs catch up after it wakes.
+- Failures are written to a log and shown as a desktop notification.
 
 ## How it works
 
@@ -89,7 +111,7 @@ Settings live in `config.json`, and passwords live in the macOS Keychain, so nei
 Alma class pages
       |  Playwright (headless Chromium)
       v
-   sync.py  (launchd, 5 minutes past every hour)
+   sync.py  (launchd or Task Scheduler, 5 minutes past every hour)
       |
       +--> notion_store.py   --> Notion database
       +--> google_store.py   --> Google Calendar
@@ -98,7 +120,7 @@ Alma class pages
 
 Each run follows the same steps:
 
-1. **Log in.** Playwright opens a headless browser and signs in to Alma with the password stored in the macOS Keychain.
+1. **Log in.** Playwright opens a headless browser and signs in to Alma with the password stored in the macOS Keychain or Windows Credential Manager.
 2. **Scrape.** It finds every class on the schedule, then reads each class page for assignments, grades, and the class's current grade.
 3. **Update the calendars.** Assignments due from 3 days ago onward go to Notion and Google Calendar. Each one is matched on its Alma assignment ID, so reruns update it instead of creating a duplicate.
 4. **Rebuild the gradebook.** The Grades tab is cleared and rewritten from the full scrape, so it always matches Alma.
@@ -121,18 +143,20 @@ alma_sync/
   grades_sheet.py               Rebuilds the Grades tab
   config.example.json           Template for config.json
   requirements.txt              Python packages
-  install_schedule.sh           Installs the hourly launchd job
+  platform_support.py           macOS and Windows differences
+  install_schedule.sh           Installs the hourly job on macOS
+  install_schedule.ps1          Installs the hourly job on Windows
   com.alma.sync.plist.template  launchd job template
   legacy/calendar_store.py      Old Apple Calendar writer, no longer used
 ```
 
 ## Using it
 
-- Sync right away: `python3 sync.py`
-- Check what happened: `~/.alma_sync/sync.log`
-- Export assignments to a file without syncing: `python3 sync.py --dump assignments.json`
+- Sync right away: `python sync.py`
+- Check what happened: `sync.log` in the `.alma_sync` folder in your home folder
+- Export assignments to a file without syncing: `python sync.py --dump assignments.json`
 
-The job only runs while the Mac is awake and catches up after it wakes. Failures are logged and show a macOS notification.
+The job only runs while the computer is awake and catches up after it wakes. Failures are logged and show a desktop notification.
 
 ## Adapting it to another school
 
@@ -140,7 +164,7 @@ Class period times are hardcoded in `PERIOD_TIMES` in `alma_scraper.py`. Change 
 
 ## Privacy
 
-Passwords and tokens live in the macOS Keychain, and the Google key lives in `~/.alma_sync/`. `config.json`, exported data, and logs are not part of this repo.
+Passwords and tokens live in the macOS Keychain or Windows Credential Manager, and the Google key lives in the `.alma_sync` folder in your home folder. `config.json`, exported data, and logs are not part of this repo.
 
 ## Bugs
 
