@@ -18,7 +18,7 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 
 ## Setup and Installation (macOS)
 
-**On Windows?** Follow the [Windows setup guide](windows/README.md) instead.
+**On Windows?** Follow the [Windows setup guide](WINDOWS_SETUP.md) instead.
 
 Needs Python 3.10 or newer.
 
@@ -136,8 +136,8 @@ alma_sync/
   install_schedule.sh           Installs the hourly job on macOS
   com.alma.sync.plist.template  launchd job template
   legacy/calendar_store.py      Old Apple Calendar writer, no longer used
+WINDOWS_SETUP.md                Windows setup guide
 windows/
-  README.md                     Windows setup guide
   windows_support.py            Windows passwords, notifications, staying awake
   install_schedule.ps1          Installs the hourly Task Scheduler task
   requirements.txt              Python packages for Windows
