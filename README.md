@@ -1,5 +1,7 @@
 # Alma Sync + Calendar Integration
 
+> **⚠️ Important:** Alma Sync is an unofficial student project. It is not made, supported, or approved by Alma or Seoul Academy. It signs in with your own Alma account and only reads your pages, but Alma can change its website at any time and break the sync, so always double-check due dates in Alma itself. Your password stays in your Mac's Keychain and is never put in this repo.
+
 Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 
 ## Why this exists
@@ -14,7 +16,7 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 | Google Calendar | The same assignments | Alerts, which Notion Calendar only sends for Google events |
 | Google Sheets | Every assignment and grade, grouped by class | Gradebook with a recently graded section |
 
-## Setup (macOS)
+## Setup and Installation (macOS)
 
 1. Install the dependencies:
 
@@ -61,6 +63,17 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 - A "Recently graded" section lists everything graded in the last 7 days, newest first.
 - Each class gets its own color-coded section with every assignment's due date, status, grade, score, points, weight, teacher comment, and graded date.
 - Low scores are highlighted red and high scores green.
+
+## Structure
+
+The project has four parts that work together:
+
+- **Scraper** (`alma_scraper.py`) signs in to Alma and reads every class page for assignments, due dates, and grades.
+- **Writers** (`notion_store.py`, `google_store.py`, `grades_sheet.py`) send that data to Notion, Google Calendar, and Google Sheets. Each one runs on its own.
+- **Runner** (`sync.py`) runs the scraper and then each writer, in order, and logs the result.
+- **Schedule** (`install_schedule.sh`) sets up a macOS launchd job that starts the runner once an hour.
+
+Settings live in `config.json`, and passwords live in the macOS Keychain, so neither one is in the code.
 
 **Reliability**
 
