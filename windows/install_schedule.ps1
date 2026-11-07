@@ -1,10 +1,12 @@
 # Installs the Alma sync as an hourly Windows scheduled task for the current user.
-# Run from PowerShell in this folder:
-#     powershell -ExecutionPolicy Bypass -File .\install_schedule.ps1
+# Run from PowerShell in the repo folder:
+#     powershell -ExecutionPolicy Bypass -File .\windows\install_schedule.ps1
 $ErrorActionPreference = "Stop"
 
 $TaskName = "Alma Sync"
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$WindowsDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$SyncDir = Join-Path (Split-Path -Parent $WindowsDir) "alma_sync"
+if (-not (Test-Path "$SyncDir\sync.py")) { throw "Could not find $SyncDir\sync.py. Keep the windows and alma_sync folders next to each other." }
 $AppDir = Join-Path $HOME ".alma_sync"
 
 $Python = (Get-Command python -ErrorAction SilentlyContinue).Source
@@ -17,7 +19,7 @@ if (-not (Test-Path $Pythonw)) { $Pythonw = $Python }
 
 New-Item -ItemType Directory -Force -Path $AppDir | Out-Null
 
-$Action = New-ScheduledTaskAction -Execute $Pythonw -Argument "`"$ScriptDir\sync.py`"" -WorkingDirectory $ScriptDir
+$Action = New-ScheduledTaskAction -Execute $Pythonw -Argument "`"$SyncDir\sync.py`"" -WorkingDirectory $SyncDir
 
 # 5 minutes past every hour, starting with the next one, plus once at sign-in.
 $Now = Get-Date

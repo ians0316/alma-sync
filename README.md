@@ -16,27 +16,29 @@ Alma is where teachers post assignments, change due dates, and enter grades, but
 | Google Calendar | The same assignments | Alerts, which Notion Calendar only sends for Google events |
 | Google Sheets | Every assignment and grade, grouped by class | Gradebook with a recently graded section |
 
-## Setup and Installation (macOS and Windows)
+## Setup and Installation (macOS)
 
-Needs Python 3.10 or newer. On Windows, install it from [python.org](https://www.python.org/downloads/) and tick **Add python.exe to PATH** in the installer. On a Mac, type `python3` wherever these steps say `python`.
+**On Windows?** Follow the [Windows setup guide](windows/README.md) instead.
+
+Needs Python 3.10 or newer.
 
 1. Install the dependencies:
 
    ```bash
    cd alma_sync
-   python -m pip install -r requirements.txt
-   python -m playwright install chromium
+   python3 -m pip install -r requirements.txt
+   python3 -m playwright install chromium
    ```
 
 2. Copy `config.example.json` to `config.json` and fill it in.
 
-3. Save your Alma password and Notion integration token:
+3. Save your Alma password and Notion integration token in the Keychain:
 
    ```bash
-   python sync.py --save-secrets
+   python3 sync.py --save-secrets
    ```
 
-   They go into the macOS Keychain or Windows Credential Manager, never into a file. On a Mac you can instead add them by hand in Keychain Access, in the **login** keychain (not iCloud):
+   Or add them by hand in Keychain Access, in the **login** keychain (not iCloud):
 
    | Keychain Item Name | Account Name | Password |
    |---|---|---|
@@ -45,26 +47,13 @@ Needs Python 3.10 or newer. On Windows, install it from [python.org](https://www
 
 4. Share the Notion database with your Notion integration.
 
-5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and Sheets APIs enabled. Save its JSON key as `google-service-account.json` in the `.alma_sync` folder in your home folder (`~/.alma_sync/` on a Mac, `C:\Users\<you>\.alma_sync\` on Windows), then share the calendar and the spreadsheet with the service account's email. Google steps are skipped if this isn't set up.
+5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and Sheets APIs enabled. Save its JSON key as `~/.alma_sync/google-service-account.json`, then share the calendar and the spreadsheet with the service account's email. Google steps are skipped if this isn't set up.
 
-6. Run it once by hand to sign in:
-
-   ```bash
-   python sync.py --setup
-   ```
-
-7. Install the hourly schedule.
-
-   On a Mac:
+6. Run it once by hand, then install the schedule:
 
    ```bash
+   python3 sync.py --setup
    ./install_schedule.sh
-   ```
-
-   On Windows, in PowerShell:
-
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File .\install_schedule.ps1
    ```
 
 ## Features
@@ -92,8 +81,8 @@ The project has four parts that work together:
 - **Scraper** (`alma_scraper.py`) signs in to Alma and reads every class page for assignments, due dates, and grades.
 - **Writers** (`notion_store.py`, `google_store.py`, `grades_sheet.py`) send that data to Notion, Google Calendar, and Google Sheets. Each one runs on its own.
 - **Runner** (`sync.py`) runs the scraper and then each writer, in order, and logs the result.
-- **Schedule** (`install_schedule.sh` on macOS, `install_schedule.ps1` on Windows) sets up a launchd job or a Task Scheduler task that starts the runner once an hour.
-- **Platform support** (`platform_support.py`) handles the parts that differ between macOS and Windows: saved passwords, notifications, and keeping the computer awake.
+- **Schedule** (`install_schedule.sh` on macOS, `windows/install_schedule.ps1` on Windows) sets up a launchd job or a Task Scheduler task that starts the runner once an hour.
+- **Platform support** (`platform_support.py`, plus `windows/windows_support.py` on Windows) handles the parts that differ between macOS and Windows: saved passwords, notifications, and keeping the computer awake.
 
 Settings live in `config.json`, and passwords live in the macOS Keychain or Windows Credential Manager, so neither one is in the code.
 
@@ -145,16 +134,20 @@ alma_sync/
   requirements.txt              Python packages
   platform_support.py           macOS and Windows differences
   install_schedule.sh           Installs the hourly job on macOS
-  install_schedule.ps1          Installs the hourly job on Windows
   com.alma.sync.plist.template  launchd job template
   legacy/calendar_store.py      Old Apple Calendar writer, no longer used
+windows/
+  README.md                     Windows setup guide
+  windows_support.py            Windows passwords, notifications, staying awake
+  install_schedule.ps1          Installs the hourly Task Scheduler task
+  requirements.txt              Python packages for Windows
 ```
 
 ## Using it
 
-- Sync right away: `python sync.py`
+- Sync right away: `python3 sync.py` (`python sync.py` on Windows)
 - Check what happened: `sync.log` in the `.alma_sync` folder in your home folder
-- Export assignments to a file without syncing: `python sync.py --dump assignments.json`
+- Export assignments to a file without syncing: `python3 sync.py --dump assignments.json`
 
 The job only runs while the computer is awake and catches up after it wakes. Failures are logged and show a desktop notification.
 
