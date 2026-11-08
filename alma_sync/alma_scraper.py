@@ -52,6 +52,8 @@ class Assignment:
     url: str
     period: str | None = None
     category: str = ""
+    end: date | None = None  # last day, for multi-day tasks from the Alma+ extension
+    notes: str = ""          # description, for tasks from the Alma+ extension
     # Raw text of every cell in the class-page row (grade, weight, points, comment, graded date).
     cells: list[str] = field(default_factory=list)
 

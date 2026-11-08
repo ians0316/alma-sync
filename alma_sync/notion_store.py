@@ -78,7 +78,9 @@ def _existing_pages(token: str, database_id: str) -> dict[str, str]:
         cursor = resp["next_cursor"]
 
 
-def _due_property(due: date, period_time: tuple[str, str] | None) -> dict:
+def _due_property(due: date, period_time: tuple[str, str] | None, end: date | None = None) -> dict:
+    if end and end > due:
+        return {"date": {"start": due.isoformat(), "end": end.isoformat()}}
     if period_time:
         return {"date": {
             "start": f"{due.isoformat()}T{period_time[0]}:00",
@@ -101,7 +103,7 @@ def upsert_assignments(token: str, database_id: str, assignments, period_times: 
             "Assignment": {"title": [{"text": {"content": a.name}}]},
             "Class": {"select": {"name": a.class_name}},
             "Period": {"select": {"name": a.period} if a.period else None},
-            "Due": _due_property(a.due, period_times.get(a.period) if a.period else None),
+            "Due": _due_property(a.due, period_times.get(a.period) if a.period else None, getattr(a, "end", None)),
             "Alma Link": {"url": a.url or None},
             "Alma Assignment ID": {"rich_text": [{"text": {"content": a.id}}]},
         }

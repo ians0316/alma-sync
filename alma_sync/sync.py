@@ -29,6 +29,7 @@ from platform_support import get_secret, save_secret, notify, keep_awake, short_
 import notion_store
 import google_store
 import grades_sheet
+import tasks_bridge
 
 APP_DIR = Path.home() / ".alma_sync"
 CONFIG_PATH = Path(__file__).parent / "config.json"
@@ -55,6 +56,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--setup", action="store_true", help="Run once with a visible browser to complete 2FA / establish trusted device.")
     parser.add_argument("--dump", metavar="PATH", help="Scrape, write the assignments to PATH as JSON, and exit without writing to Notion.")
+    parser.add_argument("--tasks-only", action="store_true", help="Only sync your own tasks from the Alma+ extension (no Alma login).")
     parser.add_argument("--save-secrets", action="store_true", help="Save the Alma password and Notion token to Keychain (macOS) or Credential Manager (Windows).")
     args = parser.parse_args()
 
@@ -66,6 +68,10 @@ def main():
         save_secret(KEYCHAIN_SERVICE, username, f"Alma password for {username}")
         save_secret(notion_store.KEYCHAIN_SERVICE, notion_store.KEYCHAIN_ACCOUNT, "Notion integration token")
         print("Saved. Next, run: python sync.py --setup")
+        return
+
+    if args.tasks_only:
+        sync_tasks(config)
         return
 
     keep_awake()
@@ -125,9 +131,34 @@ def main():
 
     sync_google_calendar(config, assignments)
     sync_grades_sheet(config, result)
+    sync_tasks(config)
 
 
-def sync_google_calendar(config, assignments):
+def sync_tasks(config):
+    """Your own tasks from the Alma+ extension -> Notion and Google Calendar.
+
+    Same rules as Alma assignments: matched by ID so reruns update in place,
+    never deleted, and only recent and upcoming ones are sent.
+    """
+    tasks = tasks_bridge.load_tasks()
+    min_due = date.today() - timedelta(days=3)
+    tasks = [t for t in tasks if (t.end or t.due) >= min_due]
+    if not tasks:
+        log("Tasks: none to sync.")
+        return
+    try:
+        token = notion_store.get_token()
+        created, updated, failures = notion_store.upsert_assignments(
+            token, config["notion_database_id"], tasks, PERIOD_TIMES)
+        for f in failures:
+            log(f"ERROR: could not write task to Notion: {f}")
+        log(f"Tasks to Notion: {created} created, {updated} updated, {len(failures)} failed.")
+    except Exception as e:
+        log(f"ERROR: tasks to Notion failed: {type(e).__name__}: {e}")
+    sync_google_calendar(config, tasks, label="Tasks to Google Calendar")
+
+
+def sync_google_calendar(config, assignments, label="Google Calendar"):
     calendar_id = config.get("google_calendar_id")
     if not google_store.is_configured(calendar_id):
         log("Google Calendar mirror not set up yet (needs google_calendar_id in config.json and the key file); skipping.")
@@ -140,7 +171,7 @@ def sync_google_calendar(config, assignments):
         return
     for f in g_failures:
         log(f"ERROR: could not write to Google Calendar: {f}")
-    log(f"Google Calendar: {g_created} created, {g_updated} updated, {len(g_failures)} failed.")
+    log(f"{label}: {g_created} created, {g_updated} updated, {len(g_failures)} failed.")
     if g_failures:
         notify("Alma Sync", f"{len(g_failures)} assignment(s) failed to reach Google Calendar. See sync.log.")
 

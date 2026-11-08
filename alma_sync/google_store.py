@@ -36,7 +36,11 @@ def _event_id(alma_id: str) -> str:
 
 
 def _event_body(a, period_time: tuple[str, str] | None) -> dict:
-    if period_time:
+    end_day = getattr(a, "end", None)
+    if end_day and end_day > a.due:
+        start = {"date": a.due.isoformat()}
+        end = {"date": (end_day + timedelta(days=1)).isoformat()}
+    elif period_time:
         start = {"dateTime": f"{a.due.isoformat()}T{period_time[0]}:00", "timeZone": TIMEZONE}
         end = {"dateTime": f"{a.due.isoformat()}T{period_time[1]}:00", "timeZone": TIMEZONE}
     else:
@@ -46,7 +50,7 @@ def _event_body(a, period_time: tuple[str, str] | None) -> dict:
     title = f"{a.class_name}: {a.name}" if a.class_name else a.name
     body = {
         "summary": title,
-        "description": a.url or "",
+        "description": a.url or getattr(a, "notes", "") or "",
         "start": start,
         "end": end,
         "status": "confirmed",

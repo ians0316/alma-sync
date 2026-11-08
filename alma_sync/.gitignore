@@ -11,3 +11,6 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+# Made by install_task_bridge.sh (contains this computer's paths)
+task_bridge_host.sh

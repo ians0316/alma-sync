@@ -66,6 +66,13 @@ Needs Python 3.10 or newer.
 - The Done checkbox in Notion is left alone, so checking off an assignment sticks.
 - Google Calendar sends alerts from its own servers, so assignments that have already synced still alert while the computer is asleep.
 
+**Your own tasks (from the Alma+ extension)**
+
+- Tasks you add in the [Alma+](https://github.com/ians0316/alma-plus) Chrome extension also go to Notion and Google Calendar, within seconds of adding or editing them.
+- They sit at their class period time like assignments; tasks without a class are all-day, and multi-day tasks span their days. The task's description goes in the event notes.
+- Like assignments, they are never deleted from Notion or Google Calendar.
+- One-time setup on macOS: `./install_task_bridge.sh` in the `alma_sync` folder. It lets Chrome hand tasks to Alma Sync; the hourly sync includes them too.
+
 **Gradebook**
 
 - A "Last updated" line shows when the data was refreshed.
@@ -130,6 +137,8 @@ alma_sync/
   notion_store.py               Writes to Notion
   google_store.py               Writes to Google Calendar
   grades_sheet.py               Rebuilds the Grades tab
+  tasks_bridge.py               Receives tasks from the Alma+ extension
+  install_task_bridge.sh        One-time setup so Chrome can hand tasks over
   config.example.json           Template for config.json
   requirements.txt              Python packages
   platform_support.py           macOS and Windows differences
@@ -148,6 +157,7 @@ windows/
 - Sync right away: `python3 sync.py` (`python sync.py` on Windows)
 - Check what happened: `sync.log` in the `.alma_sync` folder in your home folder
 - Export assignments to a file without syncing: `python3 sync.py --dump assignments.json`
+- Sync only your Alma+ tasks: `python3 sync.py --tasks-only` (log: `tasks_sync.log`)
 
 The job only runs while the computer is awake and catches up after it wakes. Failures are logged and show a desktop notification.
 
