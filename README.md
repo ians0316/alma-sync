@@ -1,61 +1,6 @@
 # Alma Sync
 
-<p align="center">
-  <b>Your Alma assignments and grades, on your calendar and in one gradebook, every hour.</b><br>
-  A background sync for Mac and Windows that reads every class page in Alma<br>
-  and sends it to Notion, Google Calendar and Google Sheets, so you never have to go check.
-</p>
-
-<p align="center">
-  <img alt="Python 3.10+" src="https://img.shields.io/badge/Python-3.10%2B-3776ab?style=flat-square&logo=python&logoColor=white">
-  <img alt="macOS · Windows" src="https://img.shields.io/badge/macOS%20%C2%B7%20Windows-hourly%20sync-3fc1c8?style=flat-square">
-  <img alt="Notion · Google Calendar · Google Sheets" src="https://img.shields.io/badge/Notion%20%C2%B7%20Google%20Calendar%20%C2%B7%20Sheets-eb6841?style=flat-square">
-  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-3a3a3a?style=flat-square">
-  <img alt="Unofficial student project" src="https://img.shields.io/badge/status-unofficial%20student%20project-d69e2e?style=flat-square">
-</p>
-
-<p align="center">
-  <a href="#get-started"><b>Set up Alma Sync</b></a> ·
-  <a href="WINDOWS_SETUP.md">Windows guide</a> ·
-  <a href="https://github.com/ians0316/alma-plus">Alma+ extension</a> ·
-  <a href="#report-a-bug">Report a bug</a>
-</p>
-
-<br>
-
-<table>
-  <tr>
-    <td width="25%" valign="top">
-      <h3>📅 On your calendar</h3>
-      Every assignment lands at the time of the class it's due in, not as an all-day block. Changed due dates update in place.
-    </td>
-    <td width="25%" valign="top">
-      <h3>🔔 Real alerts</h3>
-      Copies go to Google Calendar too, so you get reminders from Google's servers even while your computer is asleep.
-    </td>
-    <td width="25%" valign="top">
-      <h3>📊 One gradebook</h3>
-      A Google Sheet with every grade, grouped by class, color-coded, with a "Recently graded" section at the top.
-    </td>
-    <td width="25%" valign="top">
-      <h3>🔒 Your password stays home</h3>
-      Saved in the macOS Keychain or Windows Credential Manager. Never in the code, never in this repo.
-    </td>
-  </tr>
-</table>
-
-<br>
-
-<p align="center">
-  <a href="#why-this-exists">Why</a> ·
-  <a href="#how-it-works">How it works</a> ·
-  <a href="#features">Features</a> ·
-  <a href="#get-started">Get started</a> ·
-  <a href="#using-it">Using it</a> ·
-  <a href="#under-the-hood">Under the hood</a> ·
-  <a href="#status">Status</a> ·
-  <a href="#privacy">Privacy</a>
-</p>
+Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac or Windows PC reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 
 > [!IMPORTANT]
 > **Alma Sync is an unofficial student project.** It is not made, supported, or approved by Alma
@@ -188,7 +133,7 @@ while the computer is awake and catches up after it wakes.
 Class period times are set in `PERIOD_TIMES` in `alma_scraper.py`. Change them to your school's
 bell schedule, and set `base_url` in `config.json`.
 
-## Under the hood
+## Structure
 
 Four parts that work together, each one replaceable:
 
@@ -256,17 +201,7 @@ never part of this repo.
 
 ## Report a bug
 
-Email **ian.shin0316@gmail.com** or **ian.shin0316@seoulacademy.org** with what happened and the
-end of your `sync.log`.
-
----
-
-## The Alma Suite
-
-| | Project | What it's for | Code |
-|:-:|---|---|---|
-| <img src="https://raw.githubusercontent.com/ians0316/alma-plus/main/icons/icon32.png" alt="" width="32" height="32"> | **Alma+ Custom Tasks** | Your own tasks, files and notes inside Alma | [GitHub](https://github.com/ians0316/alma-plus) |
-| 🔄 | **Alma Sync** | Assignments and grades synced to Notion, Google Calendar and Google Sheets every hour | [GitHub](https://github.com/ians0316/alma-sync) |
+Email **ian.shin0316@gmail.com** or **ian.shin0316@seoulacademy.org**
 
 ## License
 
