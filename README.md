@@ -1,10 +1,11 @@
 # Alma Sync + Calendar Integration
 
-Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac or Windows PC reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 > [!IMPORTANT]
 > **Alma Sync is an unofficial student project.** It is not made, supported, or approved by Alma
 > or Seoul Academy. It signs in with your own Alma account and only reads your pages, but Alma can
 > change its website at any time and break the sync, so always double-check due dates in Alma itself.
+
+Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac or Windows PC reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 
 ## Setup and Installation (macOS)
 
