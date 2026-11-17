@@ -6,6 +6,50 @@ Alma Sync is a tool that adds convenient features for Seoul Academy students usi
 > or Seoul Academy. It signs in with your own Alma account and only reads your pages, but Alma can
 > change its website at any time and break the sync, so always double-check due dates in Alma itself.
 
+## Setup and Installation (macOS)
+
+> [!NOTE]
+> **On Windows?** Follow the [Windows setup guide](WINDOWS_SETUP.md) instead. The steps below are for macOS.
+
+Needs **Python 3.10 or newer**.
+
+1. Install the dependencies:
+
+   ```sh
+   cd alma_sync
+   python3 -m pip install -r requirements.txt
+   python3 -m playwright install chromium
+   ```
+
+2. Copy `config.example.json` to `config.json` and fill it in.
+
+3. Save your Alma password and Notion integration token in the Keychain:
+
+   ```sh
+   python3 sync.py --save-secrets
+   ```
+
+   Or add them by hand in Keychain Access, in the **login** keychain (not iCloud):
+
+   | Keychain item name | Account name | Password |
+   |---|---|---|
+   | `AlmaPortal` | your Alma username | your Alma password |
+   | `NotionToken` | `notion` | your Notion integration token |
+
+4. Share the Notion database with your Notion integration.
+
+5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and
+   Sheets APIs turned on. Save its JSON key as `~/.alma_sync/google-service-account.json`, then share
+   the calendar and the spreadsheet with the service account's email. Google steps are skipped if
+   this isn't set up.
+
+6. Run it once by hand, then install the hourly schedule:
+
+   ```sh
+   python3 sync.py --setup
+   ./install_schedule.sh
+   ```
+
 ## Why this exists
 
 Alma is where teachers post assignments, change due dates and enter grades, but it has no calendar
@@ -73,50 +117,6 @@ Alma class pages
 - Notion, Google Calendar and the gradebook are separate steps, so one problem doesn't stop the others.
 - The computer stays awake during a sync, and missed runs catch up after it wakes.
 - Failures go to a log and show as a desktop notification.
-
-## Setup and Installation (macOS)
-
-> [!NOTE]
-> **On Windows?** Follow the [Windows setup guide](WINDOWS_SETUP.md) instead. The steps below are for macOS.
-
-Needs **Python 3.10 or newer**.
-
-1. Install the dependencies:
-
-   ```sh
-   cd alma_sync
-   python3 -m pip install -r requirements.txt
-   python3 -m playwright install chromium
-   ```
-
-2. Copy `config.example.json` to `config.json` and fill it in.
-
-3. Save your Alma password and Notion integration token in the Keychain:
-
-   ```sh
-   python3 sync.py --save-secrets
-   ```
-
-   Or add them by hand in Keychain Access, in the **login** keychain (not iCloud):
-
-   | Keychain item name | Account name | Password |
-   |---|---|---|
-   | `AlmaPortal` | your Alma username | your Alma password |
-   | `NotionToken` | `notion` | your Notion integration token |
-
-4. Share the Notion database with your Notion integration.
-
-5. For Google Calendar and Sheets, create a Google Cloud service account with the Calendar and
-   Sheets APIs turned on. Save its JSON key as `~/.alma_sync/google-service-account.json`, then share
-   the calendar and the spreadsheet with the service account's email. Google steps are skipped if
-   this isn't set up.
-
-6. Run it once by hand, then install the hourly schedule:
-
-   ```sh
-   python3 sync.py --setup
-   ./install_schedule.sh
-   ```
 
 ## Using this program
 
