@@ -1,4 +1,4 @@
-# Alma Sync
+# Alma Sync + Calendar Integration
 
 Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac or Windows PC reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 
@@ -13,6 +13,14 @@ Alma is where teachers post assignments, change due dates and enter grades, but 
 feed to subscribe to and no due-date alerts. Checking it means logging in and reading a list that
 keeps changing. Alma Sync puts assignments on a calendar automatically, at the time of the class
 they're due in, and keeps every grade in one organized place.
+
+## What it does
+
+| Destination | What it gets | Why |
+|---|---|---|
+| **Notion database** | Recent and upcoming assignments at their class period time | Main calendar view in Notion Calendar |
+| **Google Calendar** | The same assignments | Alerts, which Notion Calendar only sends for Google events |
+| **Google Sheets** | Every assignment and grade, grouped by class | A gradebook with a recently graded section |
 
 ## How it works
 
@@ -33,12 +41,6 @@ Alma class pages
       +--> google_store.py   --> Google Calendar
       +--> grades_sheet.py   --> Google Sheets "Grades" tab
 ```
-
-| Destination | What it gets | Why |
-|---|---|---|
-| **Notion database** | Recent and upcoming assignments at their class period time | Main calendar view in Notion Calendar |
-| **Google Calendar** | The same assignments | Alerts, which Notion Calendar only sends for Google events |
-| **Google Sheets** | Every assignment and grade, grouped by class | A gradebook with a recently graded section |
 
 ## Features
 
@@ -73,7 +75,7 @@ Alma class pages
 - The computer stays awake during a sync, and missed runs catch up after it wakes.
 - Failures go to a log and show as a desktop notification.
 
-## Get started
+## Setup and Installation (macOS)
 
 > [!NOTE]
 > **On Windows?** Follow the [Windows setup guide](WINDOWS_SETUP.md) instead. The steps below are for macOS.
@@ -117,7 +119,7 @@ Needs **Python 3.10 or newer**.
    ./install_schedule.sh
    ```
 
-## Using it
+## Using this program
 
 ```sh
 python3 sync.py                              # sync right away (python sync.py on Windows)
@@ -145,8 +147,7 @@ Four parts that work together, each one replaceable:
 `platform_support.py` (plus `windows/windows_support.py`) handles what differs between macOS and
 Windows: saved passwords, notifications and keeping the computer awake.
 
-<details>
-<summary><b>Project layout</b></summary>
+## Project layout
 
 ```
 alma_sync/
@@ -170,17 +171,12 @@ windows/
   requirements.txt              Python packages for Windows
 ```
 
-</details>
+## Bugs fixed
 
-<details>
-<summary><b>Problems solved along the way</b></summary>
-
-- **The To Do list hides things.** Alma's To Do page drops an assignment as soon as it's graded, even on the day it's due. Reading class pages instead fixed this, and made grades available too.
-- **Apple Calendar was blocked.** The first version wrote to Apple Calendar, but macOS kept denying calendar access to the background job. Moving to Notion and Google's web APIs removed that problem.
+- **The To Do list hides things.** Alma's To Do page drops an assignment as soon as it's graded, even on the day it's due. Scraping class pages fixed this, and it also made grades available.
+- **Apple Calendar was blocked.** The first version wrote to Apple Calendar, but macOS kept denying calendar access to the background job. Moving to Notion and Google's web APIs removed that permission problem.
 - **Notion Calendar has no alerts for database items.** Its reminders only work for Google Calendar events, so assignments are also copied to a Google calendar.
 - **Laptops sleep.** A timer-based schedule kept missing runs, and sleep killed runs partway through. Fixed times, keeping the Mac awake during a run, and retries solved it.
-
-</details>
 
 ## Status
 
@@ -201,7 +197,7 @@ never part of this repo.
 
 ## Report a bug
 
-Email **ian.shin0316@gmail.com** or **ian.shin0316@seoulacademy.org**
+If you happen to find a bug, please contact at ian.shin0316@gmail.com or ian.shin0316@seoulacademy.org.
 
 ## License
 
