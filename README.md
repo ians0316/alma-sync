@@ -1,4 +1,4 @@
-<h1 align="center">🔄 Alma Sync</h1>
+# Alma Sync
 
 <p align="center">
   <b>Your Alma assignments and grades, on your calendar and in one gradebook, every hour.</b><br>
