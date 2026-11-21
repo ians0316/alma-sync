@@ -1,6 +1,5 @@
 # Alma Sync + Calendar Integration
 
-[![Release](https://img.shields.io/github/v/release/ians0316/alma-sync)](https://github.com/ians0316/alma-sync/releases/latest) [![Check](https://github.com/ians0316/alma-sync/actions/workflows/check.yml/badge.svg)](https://github.com/ians0316/alma-sync/actions/workflows/check.yml) [![License: MIT](https://img.shields.io/github/license/ians0316/alma-sync)](LICENSE) ![macOS | Windows](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey) ![Python](https://img.shields.io/badge/python-3-blue)
 
 > [!IMPORTANT]
 > **Alma Sync is an unofficial student project.** It is not made, supported, or approved by Alma

@@ -1,8 +1,0 @@
-cff-version: 1.2.0
-message: "If you use Alma Sync in your work, please cite it like this."
-title: "Alma Sync"
-type: software
-authors:
-  - alias: ians0316
-repository-code: "https://github.com/ians0316/alma-sync"
-license: MIT
