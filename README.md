@@ -1,6 +1,5 @@
 # Alma Sync + Calendar Integration
 
-
 > [!IMPORTANT]
 > **Alma Sync is an unofficial student project.** It is not made, supported, or approved by Alma
 > or Seoul Academy. It signs in with your own Alma account and only reads your pages, but Alma can
