@@ -8,6 +8,10 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    # each push to main shows under Deployments as "main", pull requests as "preview"
+    environment:
+      name: ${{ github.event_name == 'pull_request' && 'preview' || 'main' }}
+      url: https://github.com/ians0316/alma-sync/commit/${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
