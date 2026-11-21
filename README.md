@@ -196,6 +196,10 @@ Passwords and tokens live in the macOS Keychain or Windows Credential Manager, a
 lives in the `.alma_sync` folder in your home folder. `config.json`, exported data and logs are
 never part of this repo.
 
+## Contributing
+
+Want to help? See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for how to report bugs, suggest features and make changes.
+
 ## Report a bug
 
 If you happen to find a bug, please contact at ian.shin0316@gmail.com or ian.shin0316@seoulacademy.org.
