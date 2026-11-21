@@ -1,10 +1,15 @@
 # Alma Sync + Calendar Integration
 
+[![Release](https://img.shields.io/github/v/release/ians0316/alma-sync)](https://github.com/ians0316/alma-sync/releases/latest) [![Check](https://github.com/ians0316/alma-sync/actions/workflows/check.yml/badge.svg)](https://github.com/ians0316/alma-sync/actions/workflows/check.yml) [![License: MIT](https://img.shields.io/github/license/ians0316/alma-sync)](LICENSE) ![macOS | Windows](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey) ![Python](https://img.shields.io/badge/python-3-blue)
+
 > [!IMPORTANT]
 > **Alma Sync is an unofficial student project.** It is not made, supported, or approved by Alma
 > or Seoul Academy. It signs in with your own Alma account and only reads your pages, but Alma can
 > change its website at any time and break the sync, so always double-check due dates in Alma itself.
 > Your password stays in your computer's password store (macOS Keychain or Windows Credential Manager) and is never put in this repo.
+
+> [!WARNING]
+> Only works with **student** Alma accounts. Parent and teacher accounts are not supported.
 
 Alma Sync is a tool that adds convenient features for Seoul Academy students using Alma and technically everyone who uses Alma to calendar. Its purpose is to provide comfortable environment through putting todo assignments into calendar. It Keeps school assignments and grades up to date outside the Alma portal (seoulacademy.getalma.com). A background sync on a Mac or Windows PC reads every class page & todo list in Alma once an hour and sends the data to Notion, Google Calendar, and Google Sheets.
 

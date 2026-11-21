@@ -1,0 +1,17 @@
+# Checks every push for Python files that don't compile.
+name: Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Python has no syntax errors
+        run: python -m compileall -q alma_sync windows
