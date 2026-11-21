@@ -1,5 +1,5 @@
 # Makes a GitHub release whenever a version tag like v1.0.0 is pushed.
-# Release titles are just the version.
+# Release titles look like "Alma Sync v1.0.0".
 name: Release
 
 on:
@@ -24,9 +24,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$GITHUB_REF_TYPE" = "tag" ]; then
-            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+            gh release create "$GITHUB_REF_NAME" --title "Alma Sync $GITHUB_REF_NAME" --generate-notes
           fi
-          # keep every release title as just its version
+          # keep every release title as "Alma Sync <version>"
           gh release list --limit 100 --json tagName,name \
-            -q '.[] | select(.name != .tagName) | .tagName' |
-            while read -r t; do gh release edit "$t" --title "$t"; done
+            -q '.[] | select(.name != ("Alma Sync " + .tagName)) | .tagName' |
+            while read -r t; do gh release edit "$t" --title "Alma Sync $t"; done
