@@ -1,0 +1,31 @@
+# One-time: posts more starter issues, then this file is deleted.
+name: Create starter issues
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/create-issues.yml]
+permissions:
+  issues: write
+jobs:
+  issues:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - run: |
+          make() {
+            if gh issue list --state all --limit 200 --json title -q ".[].title" | grep -Fxq "$1"; then
+              echo "exists: $1"; return; fi
+            gh issue create --title "$1" --label "$2" --body "$3"
+          }
+          make "Apple Calendar and Outlook support" "enhancement" "Let students pick Apple Calendar or Outlook instead of Google Calendar in config.json."
+          make "Mark Done in Notion and see it in Alma+" "enhancement" "Two-way sync: checking a task off in Notion marks it Done in Alma+ on the next sync."
+          make "Preview what a sync would change" "good first issue" "A --preview option that lists what would be added or updated in Notion and Google Calendar without changing anything."
+          make "Choose how often the sync runs" "good first issue" "A setting in config.json for the sync interval (for example 30, 60 or 120 minutes), used by the macOS and Windows installers."
+          make "Linux support" "enhancement,help wanted" "Run the hourly sync on Linux with a systemd timer or cron, and save passwords with the system keyring."
+          make "Add class schedule to Google Calendar" "enhancement" "Optionally add each day's class periods to Google Calendar from the schedule Alma shows."
+          make "Retry when the internet drops" "good first issue" "If Alma, Notion or Google can't be reached, wait and try again a few times before giving up, and say so in sync.log."
+          make "Tests for the scraper with saved pages" "enhancement,help wanted" "Save sample Alma pages (with private info removed) and add tests that check alma_scraper.py reads assignments and grades correctly."
+          make "Weekly summary" "enhancement" "Every Sunday evening, show a notification (or Notion page) with what's due next week and grades that changed."
+          make "Add a Troubleshooting section to the README" "documentation,good first issue" "Common fixes: Alma login expired (run sync.py --setup), Notion token errors, Google key missing, the job not running while the computer sleeps."
