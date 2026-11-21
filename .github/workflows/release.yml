@@ -14,6 +14,9 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://github.com/ians0316/alma-sync/releases/latest
     steps:
       - uses: actions/checkout@v4
       - name: Make the release
