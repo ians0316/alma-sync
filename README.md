@@ -1,4 +1,4 @@
-# Alma Sync + Calendar Integration
+## Alma Sync + Calendar Integration
 
 > [!IMPORTANT]
 > **Alma Sync is an unofficial student project.** It is not made, supported, or approved by Alma
