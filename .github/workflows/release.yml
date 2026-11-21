@@ -6,7 +6,7 @@ on:
   push:
     tags: ["v*"]
     branches: [main]
-    paths: [.github/workflows/release.yml]
+    paths: [.github/workflows/release.yml, .github/RELEASE_NOTES.md]
 
 permissions:
   contents: write
@@ -24,7 +24,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$GITHUB_REF_TYPE" = "tag" ]; then
-            gh release create "$GITHUB_REF_NAME" --title "Alma Sync $GITHUB_REF_NAME" --generate-notes
+            gh release create "$GITHUB_REF_NAME" --title "Alma Sync $GITHUB_REF_NAME" --notes-file .github/RELEASE_NOTES.md --generate-notes
+          elif [ -f .github/RELEASE_NOTES.md ]; then
+            # notes were updated for the latest release
+            gh release edit "$(gh release view --json tagName -q .tagName)" --notes-file .github/RELEASE_NOTES.md
           fi
           # keep every release title as "Alma Sync <version>"
           gh release list --limit 100 --json tagName,name \
