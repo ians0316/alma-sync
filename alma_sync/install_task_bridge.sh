@@ -4,11 +4,14 @@
 #
 #   ./install_task_bridge.sh [extension-id]
 #
-# The extension id is shown on chrome://extensions (Developer mode on).
+# Alma+ 3.0 and newer always has the id neganneopojdmfhpamgaonpcaiabgooc, so no
+# argument is needed. Older Alma+ versions had a different id on each computer
+# (shown on chrome://extensions with Developer mode on); pass it to allow it too.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-EXT_ID="${1:-eeeeihfgedonmdpiobfkoljglemeijja}"
+ALMA_PLUS_ID="neganneopojdmfhpamgaonpcaiabgooc"
+OLD_ID="${1:-eeeeihfgedonmdpiobfkoljglemeijja}"
 HOST_NAME="com.alma.sync.tasks"
 HOST_DIR="$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts"
 
@@ -30,10 +33,10 @@ cat > "$HOST_DIR/$HOST_NAME.json" <<EOF
   "description": "Alma Sync task bridge for the Alma+ extension",
   "path": "$WRAPPER",
   "type": "stdio",
-  "allowed_origins": ["chrome-extension://$EXT_ID/"]
+  "allowed_origins": ["chrome-extension://$ALMA_PLUS_ID/", "chrome-extension://$OLD_ID/"]
 }
 EOF
 
 echo "Installed. Chrome will now hand your Alma+ tasks to Alma Sync."
-echo "Extension id: $EXT_ID"
+echo "Extension ids allowed: $ALMA_PLUS_ID (Alma+ 3.0+), $OLD_ID"
 echo "Log of task syncs: $HOME/.alma_sync/tasks_sync.log"

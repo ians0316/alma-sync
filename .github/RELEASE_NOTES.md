@@ -1,19 +1,11 @@
-First release of Alma Sync.
+## Highlights
+- **🔌 Ready for Alma+ 3.0.** The task bridge (which hands your Alma+ tasks to Notion and Google Calendar) now accepts Alma+ 3.0's new fixed extension ID, so task sync keeps working after you update Alma+.
 
-## Features
-- **Notion:** every Alma assignment becomes a row in your Notion database, with class, due date and status. It updates every hour.
-- **Google Calendar:** assignments show up as all-day events on their due dates.
-- **Google Sheets:** a Grades tab with every class's current grade, rebuilt after each sync.
-- **Alma+ tasks:** your own tasks from the Alma+ extension reach Notion and Google Calendar within seconds of adding or editing them.
-- **Runs by itself:** a background job checks Alma once an hour on macOS (launchd) or Windows (Task Scheduler), and catches up after the computer wakes.
-- **Never deletes:** it only adds and updates rows and events, so nothing you made by hand is removed.
+## Changes
+- `install_task_bridge.sh` now allows both Alma+ 3.0's ID (`neganneopojdmfhpamgaonpcaiabgooc`) and the older one, so it works before and after the Alma+ update.
+- No extension ID needs to be typed in anymore for Alma+ 3.0 and newer.
 
-## Privacy
-- Your Alma password and Notion token stay in your computer's password store (macOS Keychain or Windows Credential Manager), never in files.
-- `config.json`, exported data and logs are never uploaded to GitHub.
-- It only reads from Alma; it never submits or changes anything there.
-
-## Install
-Follow **Setup** in the README, or `WINDOWS_SETUP.md` on Windows.
-
-> ⚠️ Works only with **student** Alma accounts.
+## How to update
+1. Download this version (or `git pull`).
+2. In the `alma_sync` folder, run `./install_task_bridge.sh` once.
+3. In Chrome, open the Alma+ menu and press **Sync now** under Notion & Google Calendar to check it says "Synced".
